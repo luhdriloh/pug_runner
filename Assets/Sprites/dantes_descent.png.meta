@@ -91,10 +91,10 @@ TextureImporter:
       name: dantes_descent_0
       rect:
         serializedVersion: 2
-        x: 1370
-        y: 23
-        width: 47
-        height: 56
+        x: 29
+        y: 36
+        width: 131
+        height: 156
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -102,7 +102,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 142c6fc8979f446a2b9db0b9c26db40c
+      spriteID: 20408ab2732154529b951c0a12941a88
       vertices: []
       indices: 
       edges: []
@@ -111,10 +111,10 @@ TextureImporter:
       name: dantes_descent_1
       rect:
         serializedVersion: 2
-        x: 1466
-        y: 20
-        width: 47
-        height: 56
+        x: 306
+        y: 27
+        width: 131
+        height: 157
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -122,7 +122,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 65875b81f68fb4d8c85d2e7c51377845
+      spriteID: 9df298c78076244a39386889aa103e72
       vertices: []
       indices: 
       edges: []
@@ -131,10 +131,10 @@ TextureImporter:
       name: dantes_descent_2
       rect:
         serializedVersion: 2
-        x: 1558
-        y: 23
-        width: 54
-        height: 56
+        x: 574
+        y: 36
+        width: 148
+        height: 156
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -142,7 +142,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d62b810481b054203b881ebc9f8f0605
+      spriteID: d800869bb7e214e8cb5cd5fec3bd440f
       vertices: []
       indices: 
       edges: []
@@ -151,10 +151,10 @@ TextureImporter:
       name: dantes_descent_3
       rect:
         serializedVersion: 2
-        x: 1654
-        y: 20
-        width: 51
-        height: 56
+        x: 850
+        y: 27
+        width: 140
+        height: 157
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,7 +162,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3bed95ab2369549cdbfa03a5b8aee2a8
+      spriteID: f3d7a43d4621d4f28b9f5a16ebf0d960
       vertices: []
       indices: 
       edges: []

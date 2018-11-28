@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class BackgroundMovementScript : MonoBehaviour
 {
-	private void Start () {
+	private void Start ()
+    {
 		
 	}
 	

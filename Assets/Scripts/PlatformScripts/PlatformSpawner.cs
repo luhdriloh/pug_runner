@@ -25,7 +25,7 @@ public class PlatformSpawner : MonoBehaviour
             _spawnPositions.Add(transform.GetChild(i).position);
         }
 
-        CreateTunnel();
+        CreatePlatform();
 	}
 	
 	private void Update ()
@@ -33,7 +33,7 @@ public class PlatformSpawner : MonoBehaviour
 		
 	}
 
-    private void CreateTunnel()
+    private void CreatePlatform()
     {
         int spawnPointIndex = Random.Range(0, _spawnPositions.Count);
 
