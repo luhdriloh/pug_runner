@@ -20,8 +20,6 @@ public class PlayerScript : MonoBehaviour
 	
 	private void Update ()
     {
-        // TODO: make it so the character cannot rotate when near a ledge
-
         if (Input.GetKeyDown(KeyCode.DownArrow) && _playerState != PlayerState.JUMPING)
         {
             _playerState = PlayerState.CROUCHED;
@@ -36,6 +34,7 @@ public class PlayerScript : MonoBehaviour
             _playerState = PlayerState.GROUNDED;
 
             transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 2, 0);
+            _circleCollider.radius = _circleCollider.radius * 2;
         }
 
 
@@ -65,7 +64,7 @@ public class PlayerScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform") && _playerState == PlayerState.JUMPING)
         {
             _playerState = PlayerState.GROUNDED;
         }
