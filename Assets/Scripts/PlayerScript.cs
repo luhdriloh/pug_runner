@@ -2,48 +2,47 @@
 
 public class PlayerScript : MonoBehaviour
 {
-    public float _flyforce;
-    public float _flyTime;
+    public float _jumpVelocity;
+    public float _gravityDownMultiplier;
 
     private bool _crouched;
     private bool _grounded;
-    private bool _flying;
-    private float _currentFlyTime;
     private Rigidbody2D _rigidbody;
 
 
 	private void Start ()
     {
         _grounded = false;
-        _flying = false;
         _rigidbody = GetComponent<Rigidbody2D>();
 	}
 	
 	private void Update ()
     {
-        _currentFlyTime += Time.deltaTime;
+        // TODO: make it so the character cannot rotate when near a ledge 
+
 
         if (Input.GetKeyDown(KeyCode.Space) && _grounded)
         {
-            _rigidbody.AddForce(new Vector2(0f, _flyforce));
-
             _grounded = false;
-            _flying = true;
-        }
-        else if (Input.GetKeyUp(KeyCode.Space) || _currentFlyTime >= _flyTime)
-        {
-            _currentFlyTime = 0f;
-            _flying = false;
+            Jump();
         }
 
-        if (_flying)
+        if (_rigidbody.velocity.y > 0)
         {
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                _rigidbody.velocity -= Vector2.up * _rigidbody.velocity.y;
+            }
         }
-	}
+        else
+        {
+            _rigidbody.AddForce(Vector2.up * (_gravityDownMultiplier * Physics2D.gravity * _rigidbody.mass * Time.deltaTime)); // times the mass of the object
+        }
+    }
 
-    private void Fly()
+    private void Jump()
     {
-        _rigidbody.AddForce(new Vector2(0f, _flyforce * Time.deltaTime));
+        _rigidbody.velocity += Vector2.up * _jumpVelocity;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

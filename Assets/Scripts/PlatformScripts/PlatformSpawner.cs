@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PlatformSpawner : MonoBehaviour
@@ -23,7 +22,7 @@ public class PlatformSpawner : MonoBehaviour
 
         for (int i = 0; i < transform.childCount; i++)
         {
-            _spawnPositions.Add(transform.GetChild(0).position);
+            _spawnPositions.Add(transform.GetChild(i).position);
         }
 
         CreateTunnel();
@@ -36,16 +35,19 @@ public class PlatformSpawner : MonoBehaviour
 
     private void CreateTunnel()
     {
-        int spawnPointIndex = Mathf.FloorToInt(Random.Range(0, _spawnPositions.Count));
+        int spawnPointIndex = Random.Range(0, _spawnPositions.Count);
+
         foreach (GameObject platform in _platformPool)
         {
-            Platform platformScript = platform.GetComponentInParent<Platform>();
-            if (platformScript.OutOfBounds())
+            Platform platformScript = platform.GetComponent<Platform>();
+            if (!platformScript._inPlay)
             {
                 platformScript.PutPlatformIntoPlay(_spawnPositions[spawnPointIndex]);
+                break;
             }
         }
 
-        Invoke("CreateTunnel", 3f);
+        // this should be determined by the speed of the platforms
+        Invoke("CreateTunnel", 1f);
     }
 }

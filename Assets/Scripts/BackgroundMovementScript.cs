@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class BackgroundMovementScript : MonoBehaviour
 {
-    public Vector3 _movementSpeed;
-
 	private void Start () {
 		
 	}
 	
 	private void Update ()
     {
-        transform.position += (_movementSpeed * Time.deltaTime);
+        transform.position -= (Vector3.right * GameValues._gameMoveSpeed * Time.deltaTime);
 	}
 }
