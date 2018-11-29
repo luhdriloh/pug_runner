@@ -1,35 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Platform : MonoBehaviour
 {
-    public bool _inPlay;
-    private float _yHalfSize;
+    private SpriteRenderer _spriteRenderer;
 
     public void PutPlatformIntoPlay(Vector3 position)
     {
         gameObject.SetActive(true);
-        transform.position = position - (Vector3.up * _yHalfSize);
-        _inPlay = true;
+        transform.position = position;
+    }
+
+    public void PutPlatformIntoRest()
+    {
+        gameObject.SetActive(false);
     }
 
     public bool OutOfBounds()
     {
-        return transform.position.x < -16;
+        return transform.position.x + (_spriteRenderer.size.x * transform.localScale.x) / 2 < -16;
     }
 
-    private void Awake()
+    private void Start()
     {
-        _yHalfSize = (GetComponent<SpriteRenderer>().size.y / 2) * transform.localScale.y;
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
-
-    private void Update ()
-    {
-        if (OutOfBounds())
-        {
-            _inPlay = false;
-            gameObject.SetActive(false);
-        }
-	}
 }

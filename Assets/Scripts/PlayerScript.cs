@@ -9,7 +9,7 @@ public class PlayerScript : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private CircleCollider2D _circleCollider;
 
-    private enum PlayerState { UNKNOWN, GROUNDED, CROUCHED, JUMPING };
+    private enum PlayerState { UNKNOWN, RUNNING, CROUCHING, JUMPING };
 
 	private void Start ()
     {
@@ -18,43 +18,73 @@ public class PlayerScript : MonoBehaviour
         _circleCollider = GetComponent<CircleCollider2D>();
 	}
 	
+
 	private void Update ()
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow) && _playerState != PlayerState.JUMPING)
+        switch (_playerState)
         {
-            _playerState = PlayerState.CROUCHED;
+            case PlayerState.RUNNING:
+                // jumping
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    _playerState = PlayerState.JUMPING;
+                    Jump();
+                }
 
-            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 2, 0);
-            _circleCollider.radius = _circleCollider.radius / 2;
+                // crouch
+                if (Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    _playerState = PlayerState.CROUCHING;
+                    Crouch();
+                }
+
+                break;
+
+            case PlayerState.CROUCHING:
+                // jumping
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    _playerState = PlayerState.JUMPING;
+                    UnCrouch();
+                    Jump();
+                }
+                else if (Input.GetKeyUp(KeyCode.DownArrow))
+                {
+                    _playerState = PlayerState.RUNNING;
+                    UnCrouch();
+                }
+
+                break;
+
+            case PlayerState.JUMPING:
+                if (_rigidbody.velocity.y > 0)
+                {
+                    if (Input.GetKeyUp(KeyCode.Space))
+                    {
+                        _rigidbody.velocity -= Vector2.up * _rigidbody.velocity.y;
+                    }
+                }
+                else if (_rigidbody.velocity.y < 0)
+                {
+                    _rigidbody.AddForce(Vector2.up * (_gravityDownMultiplier * Physics2D.gravity * _rigidbody.mass * Time.deltaTime)); // times the mass of the object
+                }
+                break;
+
+            default:
+                break;
         }
+    }
 
-        if (Input.GetKeyUp(KeyCode.DownArrow) && _playerState == PlayerState.CROUCHED)
-        {
-            Debug.Log("up from crouch");
-            _playerState = PlayerState.GROUNDED;
+    private void Crouch()
+    {
+        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 2, 0);
+        _circleCollider.radius = _circleCollider.radius / 2;
+    }
 
-            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 2, 0);
-            _circleCollider.radius = _circleCollider.radius * 2;
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.Space) && _playerState != PlayerState.JUMPING)
-        {
-            _playerState = PlayerState.JUMPING;
-            Jump();
-        }
-
-        if (_rigidbody.velocity.y > 0)
-        {
-            if (Input.GetKeyUp(KeyCode.Space))
-            {
-                _rigidbody.velocity -= Vector2.up * _rigidbody.velocity.y;
-            }
-        }
-        else if (_rigidbody.velocity.y < 0)
-        {
-            _rigidbody.AddForce(Vector2.up * (_gravityDownMultiplier * Physics2D.gravity * _rigidbody.mass * Time.deltaTime)); // times the mass of the object
-        }
+    private void UnCrouch()
+    {
+        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.x, 0);
+        _circleCollider.radius = _circleCollider.radius * 2;
     }
 
     private void Jump()
@@ -64,9 +94,9 @@ public class PlayerScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform") && _playerState == PlayerState.JUMPING)
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform") && (_playerState == PlayerState.JUMPING || _playerState == PlayerState.UNKNOWN))
         {
-            _playerState = PlayerState.GROUNDED;
+            _playerState = PlayerState.RUNNING;
         }
     }
 }

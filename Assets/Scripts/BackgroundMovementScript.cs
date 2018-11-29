@@ -11,6 +11,6 @@ public class BackgroundMovementScript : MonoBehaviour
 	
 	private void Update ()
     {
-        transform.position -= (Vector3.right * GameValues._gameMoveSpeed * Time.deltaTime);
+        transform.position -= (Vector3.right * GameValues._gamevalues._gameMoveSpeed * Time.deltaTime);
 	}
 }
