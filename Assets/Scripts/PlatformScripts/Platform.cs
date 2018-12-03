@@ -2,6 +2,7 @@
 
 public class Platform : MonoBehaviour
 {
+    public int _platformType;
     private SpriteRenderer _spriteRenderer;
 
     public void PutPlatformIntoPlay(Vector3 position)
@@ -17,7 +18,7 @@ public class Platform : MonoBehaviour
 
     public bool OutOfBounds()
     {
-        return transform.position.x + (_spriteRenderer.size.x * transform.localScale.x) / 2 < -16;
+        return transform.position.x + (_spriteRenderer.size.x * transform.localScale.x) / 2 < -10;
     }
 
     private void Start()

@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class PlatformSpawner : MonoBehaviour
 {
-    public GameObject _platformPrototype;
-    public int _platformPoolAmount;
+    public PlatformData _platformData;
 
-    private Stack<GameObject> _platformsNotInUse;
+    private int _platformPoolAmount;
+    private List<Stack<GameObject>> _platformsNotInUse;
     private List<GameObject> _platformsInUse;
 
 
@@ -25,19 +25,24 @@ public class PlatformSpawner : MonoBehaviour
     // max y delta
     // max time between platforms
 
-    // h
-
 	private void Start ()
     {
+        _platformPoolAmount = _platformData._platformPrototypes.Count;
         _platformsInUse = new List<GameObject>();
-        _platformsNotInUse = new Stack<GameObject>();
+        _platformsNotInUse = new List<Stack<GameObject>>();
 
+        // create 5 of each different type of Platform
         for (int i = 0; i < _platformPoolAmount; i++)
         {
-            GameObject newGameObject = Instantiate(_platformPrototype, transform.position, Quaternion.identity);
-            newGameObject.SetActive(false);
-            _platformsNotInUse.Push(newGameObject);
+            _platformsNotInUse.Add(new Stack<GameObject>());
 
+            for (int j = 0; j < 5; j++)
+            {
+                GameObject newGameObject = Instantiate(_platformData._platformPrototypes[i], transform.position, Quaternion.identity);
+                newGameObject.GetComponent<Platform>()._platformType = i;
+                newGameObject.SetActive(false);
+                _platformsNotInUse[i].Push(newGameObject);
+            }
         }
 
         CreateStartPlatform();
@@ -48,9 +53,8 @@ public class PlatformSpawner : MonoBehaviour
     {
         RecycleOutOfBoundsPlatforms();
 
-        // check each platform out of bounds
         Vector3 platformPosition = _platformsInUse[_platformsInUse.Count - 1].gameObject.transform.position;
-        if (platformPosition.x <= 0)
+        if (platformPosition.x <= 10)
         {
             CreatePlatform();
         }
@@ -69,6 +73,10 @@ public class PlatformSpawner : MonoBehaviour
             {
                 toRemove.Add(platform);
             }
+            else
+            {
+                break;
+            }
         }
 
         foreach (GameObject platformToRemove in toRemove)
@@ -77,14 +85,14 @@ public class PlatformSpawner : MonoBehaviour
             platformScript.PutPlatformIntoRest();
 
             _platformsInUse.Remove(platformToRemove);
-            _platformsNotInUse.Push(platformToRemove);
+            _platformsNotInUse[platformScript._platformType].Push(platformToRemove);
         }
     }
 
 
     private void CreateStartPlatform()
     {
-        GameObject platform = _platformsNotInUse.Pop();
+        GameObject platform = _platformsNotInUse[0].Pop();
         _platformsInUse.Add(platform);
 
         platform.GetComponent<Platform>().PutPlatformIntoPlay(GameValues._gamevalues._gameStartPlatformPosition);
@@ -103,8 +111,9 @@ public class PlatformSpawner : MonoBehaviour
     {
         float platformWidth = previousPlatform.GetComponent<SpriteRenderer>().size.x * previousPlatform.transform.localScale.x;
         float farRightSidePosition = previousPlatform.transform.position.x + (platformWidth / 2);
-
-        return farRightSidePosition;
+        float rangeToAdd = Random.Range(GameValues._gamevalues._minPlatformXDistance, GameValues._gamevalues._maxPlatformXDistance);
+        float platformSpeedPart = GameValues._gamevalues._gameMoveSpeed - GameValues._gamevalues._baseMoveSpeed;
+        return (farRightSidePosition + rangeToAdd + platformSpeedPart);
     }
 
 
@@ -122,27 +131,34 @@ public class PlatformSpawner : MonoBehaviour
     }
 
 
-    private float ReturnNewScale()
-    {
-        return Random.Range(GameValues._gamevalues._minPlatformScale, GameValues._gamevalues._maxPlatformScale);
-    }
-
-
     private void CreatePlatform()
     {
-        GameObject gameobject = _platformsNotInUse.Pop();
+        int whichTypeOfPlatform = ReturnTypeOfPlatformToSpawn();
+        GameObject gameobject = _platformsNotInUse[whichTypeOfPlatform].Pop();
 
         Platform platformScript = gameobject.GetComponent<Platform>();
 
-        // set new platform width
-        float newXScale = ReturnNewScale();
-        gameobject.transform.localScale = new Vector3(newXScale, gameobject.transform.localScale.y, 0f);
+        // get platform width
+        float platformWidth = gameobject.GetComponent<SpriteRenderer>().size.x * gameobject.transform.localScale.x;
 
-        float newPlatformWidth = newXScale * gameobject.GetComponent<SpriteRenderer>().size.x;
-
-        Vector3 newPlatformPosition = ReturnNewPlatformPosition(newPlatformWidth);
+        Vector3 newPlatformPosition = ReturnNewPlatformPosition(platformWidth);
         _platformsInUse.Add(gameobject);
 
         platformScript.PutPlatformIntoPlay(newPlatformPosition);
+    }
+
+
+    private int ReturnTypeOfPlatformToSpawn()
+    {
+        float randNum = Random.value;
+        for (int i = 0; i < _platformData._spawnRatePercentages.Count; i++)
+        {
+            if (randNum <= _platformData._spawnRatePercentages[i])
+            {
+                return i;
+            }
+        }
+
+        return 0;
     }
 }

@@ -5,21 +5,32 @@ public class PlayerScript : MonoBehaviour
     public float _jumpVelocity;
     public float _gravityDownMultiplier;
 
+    private float _xStart;
     private PlayerState _playerState;
     private Rigidbody2D _rigidbody;
-    private CircleCollider2D _circleCollider;
+    private Animator _animator;
 
-    private enum PlayerState { UNKNOWN, RUNNING, CROUCHING, JUMPING };
+    private enum PlayerState { UNKNOWN, RUNNING, CROUCHING, JUMPING, FALLING };
 
 	private void Start ()
     {
-        _playerState = PlayerState.UNKNOWN;
-        _rigidbody = GetComponent<Rigidbody2D>();
-        _circleCollider = GetComponent<CircleCollider2D>();
-	}
-	
+        _xStart = transform.position.x;
 
-	private void Update ()
+        _playerState = PlayerState.RUNNING;
+        _rigidbody = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
+	}
+
+    private void FixedUpdate()
+    {
+        if (_rigidbody.velocity.y <= 0)
+        {
+            _rigidbody.AddForce(Vector2.up * (_gravityDownMultiplier * Physics2D.gravity * _rigidbody.mass * Time.deltaTime));
+        }
+    }
+
+
+    private void Update ()
     {
         switch (_playerState)
         {
@@ -41,7 +52,6 @@ public class PlayerScript : MonoBehaviour
                 break;
 
             case PlayerState.CROUCHING:
-                // jumping
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     _playerState = PlayerState.JUMPING;
@@ -61,42 +71,69 @@ public class PlayerScript : MonoBehaviour
                 {
                     if (Input.GetKeyUp(KeyCode.Space))
                     {
+                        _animator.SetBool("Jump", false);
+
                         _rigidbody.velocity -= Vector2.up * _rigidbody.velocity.y;
                     }
                 }
-                else if (_rigidbody.velocity.y < 0)
+                else if (_rigidbody.velocity.y <= -Mathf.Epsilon)
                 {
-                    _rigidbody.AddForce(Vector2.up * (_gravityDownMultiplier * Physics2D.gravity * _rigidbody.mass * Time.deltaTime)); // times the mass of the object
+                    _playerState = PlayerState.FALLING;
+                    Falling();
                 }
+                break;
+
+            case PlayerState.FALLING:
+
                 break;
 
             default:
                 break;
         }
+
+        transform.position = new Vector3(_xStart, transform.position.y, transform.position.z);
     }
+
 
     private void Crouch()
     {
-        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 2, 0);
-        _circleCollider.radius = _circleCollider.radius / 2;
+        _animator.SetBool("Crouching", true);
     }
 
     private void UnCrouch()
     {
-        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.x, 0);
-        _circleCollider.radius = _circleCollider.radius * 2;
+        _animator.SetBool("Crouching", false);
+    }
+
+    private void Falling()
+    {
+        _animator.SetTrigger("Top");
+        _animator.SetBool("Jump", false);
+        _animator.SetBool("Falling", true);
     }
 
     private void Jump()
     {
+        _animator.SetBool("Jump", true);
         _rigidbody.velocity += Vector2.up * _jumpVelocity;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform") && (_playerState == PlayerState.JUMPING || _playerState == PlayerState.UNKNOWN))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform") && (_playerState == PlayerState.FALLING || _playerState == PlayerState.UNKNOWN))
         {
+            _animator.SetBool("Falling", false);
+            _animator.SetTrigger("Running");
             _playerState = PlayerState.RUNNING;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform") && (_playerState == PlayerState.RUNNING))
+        {
+            _animator.SetBool("Falling", true);
+            _playerState = PlayerState.FALLING;
         }
     }
 }
