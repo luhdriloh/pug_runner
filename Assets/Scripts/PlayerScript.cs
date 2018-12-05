@@ -9,6 +9,7 @@ public class PlayerScript : MonoBehaviour
     private PlayerState _playerState;
     private Rigidbody2D _rigidbody;
     private Animator _animator;
+    private GameObject _lastTouchedGameObject;
 
     private enum PlayerState { UNKNOWN, RUNNING, CROUCHING, JUMPING, FALLING };
 
@@ -19,7 +20,8 @@ public class PlayerScript : MonoBehaviour
         _playerState = PlayerState.RUNNING;
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
-	}
+        _lastTouchedGameObject = null;
+    }
 
     private void FixedUpdate()
     {
@@ -40,28 +42,6 @@ public class PlayerScript : MonoBehaviour
                 {
                     _playerState = PlayerState.JUMPING;
                     Jump();
-                }
-
-                // crouch
-                if (Input.GetKeyDown(KeyCode.DownArrow))
-                {
-                    _playerState = PlayerState.CROUCHING;
-                    Crouch();
-                }
-
-                break;
-
-            case PlayerState.CROUCHING:
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    _playerState = PlayerState.JUMPING;
-                    UnCrouch();
-                    Jump();
-                }
-                else if (Input.GetKeyUp(KeyCode.DownArrow))
-                {
-                    _playerState = PlayerState.RUNNING;
-                    UnCrouch();
                 }
 
                 break;
@@ -92,17 +72,16 @@ public class PlayerScript : MonoBehaviour
         }
 
         transform.position = new Vector3(_xStart, transform.position.y, transform.position.z);
+
+        if (!InView())
+        {
+            GameController._gameController.GameOver();
+        }
     }
 
-
-    private void Crouch()
+    private bool InView()
     {
-        _animator.SetBool("Crouching", true);
-    }
-
-    private void UnCrouch()
-    {
-        _animator.SetBool("Crouching", false);
+        return transform.position.y > -7;
     }
 
     private void Falling()
@@ -122,9 +101,16 @@ public class PlayerScript : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Platform") && (_playerState == PlayerState.FALLING || _playerState == PlayerState.UNKNOWN))
         {
+            if (collision.gameObject != _lastTouchedGameObject)
+            {
+                GameController._gameController.Score();
+                _lastTouchedGameObject = collision.gameObject;
+            }
+
             _animator.SetBool("Falling", false);
             _animator.SetTrigger("Running");
             _playerState = PlayerState.RUNNING;
+
         }
     }
 

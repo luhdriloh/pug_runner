@@ -21,7 +21,7 @@ public class Platform : MonoBehaviour
         return transform.position.x + (_spriteRenderer.size.x * transform.localScale.x) / 2 < -10;
     }
 
-    private void Start()
+    private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
