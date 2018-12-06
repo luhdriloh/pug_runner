@@ -6,6 +6,7 @@ public class PlayerScript : MonoBehaviour
     public float _gravityDownMultiplier;
 
     private float _xStart;
+    private bool _gameOver;
 
     private PlayerState _playerState;
     private Rigidbody2D _rigidbody;
@@ -17,6 +18,7 @@ public class PlayerScript : MonoBehaviour
 	private void Start ()
     {
         _xStart = transform.position.x;
+        _gameOver = false;
 
         _playerState = PlayerState.RUNNING;
         _rigidbody = GetComponent<Rigidbody2D>();
@@ -40,23 +42,48 @@ public class PlayerScript : MonoBehaviour
         {
             case PlayerState.RUNNING:
                 // jumping
+#if UNITY_STANDALONE
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     _playerState = PlayerState.JUMPING;
                     Jump();
                 }
 
+#elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
+                if (Input.touchCount > 0)
+                {
+                    _playerState = PlayerState.JUMPING;
+                    Jump();
+                }
+
+#endif
+
                 break;
 
             case PlayerState.JUMPING:
                 if (_rigidbody.velocity.y > 0)
                 {
+
+#if UNITY_STANDALONE
                     if (Input.GetKeyUp(KeyCode.Space))
                     {
                         _animator.SetBool("Jump", false);
-
                         _rigidbody.velocity -= Vector2.up * _rigidbody.velocity.y;
                     }
+
+#elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
+                    if (Input.touchCount > 0)
+                    {
+                        Touch touch = Input.GetTouch(0);
+
+                        if (touch.phase == TouchPhase.Ended)
+                        {
+                            _animator.SetBool("Jump", false);
+                            _rigidbody.velocity -= Vector2.up * _rigidbody.velocity.y;
+                        }
+                    }
+#endif
+
                 }
                 else if (_rigidbody.velocity.y <= -Mathf.Epsilon)
                 {
@@ -75,8 +102,9 @@ public class PlayerScript : MonoBehaviour
 
         transform.position = new Vector3(_xStart, transform.position.y, transform.position.z);
 
-        if (!InView() && !GameController._gameController._gameOver)
+        if (!InView() && _gameOver == false)
         {
+            _gameOver = true;
             GameController._gameController.GameOver();
         }
     }

@@ -79,6 +79,7 @@ public class GameController : MonoBehaviour
         Time.timeScale = 0f;
         PlayerSaveData._playerSaveDataInstance.UpdateHighscore(_points);
         _gameoverGUI.SetActive(true);
+        GetComponentInChildren<GameMusic>().SetGameOverMusic();
     }
 
     public void Restart()

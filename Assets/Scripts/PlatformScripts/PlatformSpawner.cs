@@ -85,9 +85,6 @@ public class PlatformSpawner : MonoBehaviour
         int whichTypeOfPlatform = ReturnTypeOfPlatformToSpawn();
         Platform platform = _platformsNotInUse[whichTypeOfPlatform].Pop();
         _platformsInUse.Add(platform);
-
-        float platformWidth = platform.GetPlatformWidth();
-
         platform.GetComponent<Platform>().PutPlatformIntoPlay(GameController._gameController._gameStartPlatformPosition);
     }
 
