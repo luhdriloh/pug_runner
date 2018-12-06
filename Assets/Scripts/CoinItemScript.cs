@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PotionItemScript : MonoBehaviour 
+public class CoinItemScript : MonoBehaviour 
 {
     public bool _inUse = false;
     public float _speedUp;
@@ -27,6 +25,7 @@ public class PotionItemScript : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
+            CoinParticleSpawn._coinSpawnInstance.Spawn(transform.position);
             GameController._gameController.SpeedUp();
             _inUse = false;
             gameObject.SetActive(false);

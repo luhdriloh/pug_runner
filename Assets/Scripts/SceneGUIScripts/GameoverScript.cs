@@ -5,8 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class GameoverScript : MonoBehaviour
 {
+    public List<Sprite> _medalSprites;
+
     public GameObject _scoreTextToTurnOff;
     public GameObject _scoreMuliplierTextToTurnOff;
+    public Image _medalImage;
 
     public Text _currentScoreText;
     public Text _highscoreText;
@@ -25,6 +28,10 @@ public class GameoverScript : MonoBehaviour
 
         _currentScoreText.text = currentScore.ToString();
         _highscoreText.text = highscore.ToString();
+
+        int medalSpriteToUse = PlayerSaveData._playerSaveDataInstance._lastPlaceAttained;
+        medalSpriteToUse = medalSpriteToUse >= 4 ? 3 : medalSpriteToUse;
+        _medalImage.sprite = _medalSprites[medalSpriteToUse];
 
         // set up the buttons
         _startGameButton.onClick.AddListener(StartGameplayScene);

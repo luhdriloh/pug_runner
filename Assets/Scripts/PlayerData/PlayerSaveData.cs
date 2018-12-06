@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerSaveData : MonoBehaviour
 {
     public static PlayerSaveData _playerSaveDataInstance;
+    public int _lastPlaceAttained;
     private HighscoreSaveData _highscores;
     private readonly string _saveFileName = "/foxy_runner_highscores.dat";
     private long _currentHighscore;
@@ -22,6 +23,7 @@ public class PlayerSaveData : MonoBehaviour
             Destroy(this);
         }
 
+        _lastPlaceAttained = 0;
         Load();
     }
 
@@ -38,13 +40,22 @@ public class PlayerSaveData : MonoBehaviour
         {
             // create data for just one level
             _highscores = new HighscoreSaveData();
-            _highscores._listOfHighscores = new List<long>(3);
-            for (int i = 0; i < 3; i++)
+            _highscores._listOfHighscores = new List<long>();
+            for (int i = 0; i < 10; i++)
             {
                 _highscores._listOfHighscores.Add(0);
             }
 
             Save();
+        }
+
+        int numberOfScoreValues = _highscores._listOfHighscores.Count;
+        if (numberOfScoreValues < 10)
+        {
+            for (int i = 0; i < 10 - numberOfScoreValues; i++)
+            {
+                _highscores._listOfHighscores.Add(0);
+            }
         }
     }
 
@@ -64,22 +75,24 @@ public class PlayerSaveData : MonoBehaviour
 
     public void UpdateHighscore(long highscore)
     {
-        bool saveNeeded = false;
+        int scoreGreaterThanHowManyPreviousOnes = 0;
 
         foreach (long score in _highscores._listOfHighscores)
         {
             if (score < highscore)
             {
-                saveNeeded = true;
+                scoreGreaterThanHowManyPreviousOnes++;
             }
         }
 
-        if (saveNeeded)
+        _lastPlaceAttained = 10 - scoreGreaterThanHowManyPreviousOnes;
+
+        if (scoreGreaterThanHowManyPreviousOnes > 0)
         {
             _highscores._listOfHighscores.Add(highscore);
             _highscores._listOfHighscores.Sort();
 
-            _highscores._listOfHighscores = _highscores._listOfHighscores.GetRange(1, 3);
+            _highscores._listOfHighscores = _highscores._listOfHighscores.GetRange(1, 10);
             Save();
         }
     }

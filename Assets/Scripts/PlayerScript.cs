@@ -6,6 +6,7 @@ public class PlayerScript : MonoBehaviour
     public float _gravityDownMultiplier;
 
     private float _xStart;
+
     private PlayerState _playerState;
     private Rigidbody2D _rigidbody;
     private Animator _animator;
@@ -22,6 +23,7 @@ public class PlayerScript : MonoBehaviour
         _animator = GetComponent<Animator>();
         _lastTouchedGameObject = null;
     }
+
 
     private void FixedUpdate()
     {
@@ -73,16 +75,18 @@ public class PlayerScript : MonoBehaviour
 
         transform.position = new Vector3(_xStart, transform.position.y, transform.position.z);
 
-        if (!InView())
+        if (!InView() && !GameController._gameController._gameOver)
         {
             GameController._gameController.GameOver();
         }
     }
 
+
     private bool InView()
     {
         return transform.position.y > -7;
     }
+
 
     private void Falling()
     {
@@ -91,11 +95,13 @@ public class PlayerScript : MonoBehaviour
         _animator.SetBool("Falling", true);
     }
 
+
     private void Jump()
     {
         _animator.SetBool("Jump", true);
         _rigidbody.velocity += Vector2.up * _jumpVelocity;
     }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -110,9 +116,9 @@ public class PlayerScript : MonoBehaviour
             _animator.SetBool("Falling", false);
             _animator.SetTrigger("Running");
             _playerState = PlayerState.RUNNING;
-
         }
     }
+
 
     private void OnCollisionExit2D(Collision2D collision)
     {

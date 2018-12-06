@@ -8,6 +8,7 @@ public class GameController : MonoBehaviour
 {
     public static GameController _gameController;
     public GameObject _gameoverGUI;
+    public bool _gameOver = false;
 
     public float _minMoveSpeed = 6f;
     public float _maxMoveSpeed = 12f;
@@ -74,6 +75,7 @@ public class GameController : MonoBehaviour
 
     public void GameOver()
     {
+        _gameOver = true;
         Time.timeScale = 0f;
         PlayerSaveData._playerSaveDataInstance.UpdateHighscore(_points);
         _gameoverGUI.SetActive(true);

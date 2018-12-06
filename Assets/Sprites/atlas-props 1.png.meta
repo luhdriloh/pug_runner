@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: ad95b8c59b9674d6496414229f5b3bb8
+guid: a6336f1e6c64946bd8c882c95aeecc0d
 TextureImporter:
   fileIDToRecycleName:
-    21300000: atlas_props_0
-    21300002: atlas_props_1
-    21300004: atlas_props_2
-    21300006: atlas_props_3
-    21300008: atlas_props_4
-    21300010: atlas_props_5
+    21300000: atlas-props 1_0
+    21300002: atlas-props 1_1
+    21300004: atlas-props 1_2
+    21300006: atlas-props 1_3
+    21300008: atlas-props 1_4
+    21300010: atlas-props 1_5
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -90,7 +90,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: atlas_props_0
+      name: atlas-props 1_0
       rect:
         serializedVersion: 2
         x: 112
@@ -98,59 +98,59 @@ TextureImporter:
         width: 128
         height: 76
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c89069253498640f084d197971cbd283
+      spriteID: 2c8e7fd0449514ad0a912a273ed883cf
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_props_1
+      name: atlas-props 1_1
       rect:
         serializedVersion: 2
         x: 295
         y: 968
         width: 80
-        height: 32
+        height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 007fa4ca91700422a9e503d2252779cf
+      spriteID: 0e9d2c5574af8422481573ea99459097
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_props_2
+      name: atlas-props 1_2
       rect:
         serializedVersion: 2
         x: 468
         y: 933
         width: 734
-        height: 76
+        height: 138
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5474453cbaaa04211bf45f31307d6ada
+      spriteID: f092c25a742af4d289d7deec92be5d4d
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_props_3
+      name: atlas-props 1_3
       rect:
         serializedVersion: 2
         x: 53
@@ -158,19 +158,19 @@ TextureImporter:
         width: 224
         height: 111
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9d169cc9751474752bd6bb72a6d2b523
+      spriteID: aaae8a46fe17e44008641a5157391020
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_props_4
+      name: atlas-props 1_4
       rect:
         serializedVersion: 2
         x: 666
@@ -178,19 +178,19 @@ TextureImporter:
         width: 368
         height: 204
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 92097f54afb6e4c0d9fea846061ad7c2
+      spriteID: 5208cfbfd0a9346f899642a62dd82108
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_props_5
+      name: atlas-props 1_5
       rect:
         serializedVersion: 2
         x: 39
@@ -198,13 +198,13 @@ TextureImporter:
         width: 496
         height: 205
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9fc7210ed6c9948ff8de9f49851e524b
+      spriteID: bff92218c72494062be5de3f80ad6f2e
       vertices: []
       indices: 
       edges: []
@@ -212,7 +212,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 02a1dfdf5ec3b4843851916892f495e6
+    spriteID: 400e6a908fc8f4437bf875bf07a93c87
     vertices: []
     indices: 
     edges: []
