@@ -1,0 +1,9 @@
+lastUpgrade=00955
+proj.pluginVersion=0.9.55
+proj.AppId=771064835100
+proj.classDir=FoxyRunner
+proj.ConstantsClassName=GPGSIds
+and.ResourceData=%3c%3fxml+version%3d%221.0%22+encoding%3d%22utf-8%22%3f%3e%0a%3c%21--%0aGoogle+Play+game+services+IDs.%0aSave+this+file+as+res%2fvalues%2fgames-ids.xml+in+your+project.%0a--%3e%0a%3cresources%3e%0a++%3c%21--+app_id+--%3e%0a++%3cstring+name%3d%22app_id%22+translatable%3d%22false%22%3e771064835100%3c%2fstring%3e%0a++%3c%21--+package_name+--%3e%0a++%3cstring+name%3d%22package_name%22+translatable%3d%22false%22%3ecom.littleapex.foxyrunner%3c%2fstring%3e%0a++%3c%21--+achievement+Beginner+--%3e%0a++%3cstring+name%3d%22achievement_beginner%22+translatable%3d%22false%22%3eCgkInNiuuLgWEAIQAw%3c%2fstring%3e%0a++%3c%21--+achievement+Novice+--%3e%0a++%3cstring+name%3d%22achievement_novice%22+translatable%3d%22false%22%3eCgkInNiuuLgWEAIQBA%3c%2fstring%3e%0a++%3c%21--+achievement+Intermediate+Level+Runner+--%3e%0a++%3cstring+name%3d%22achievement_intermediate_level_runner%22+translatable%3d%22false%22%3eCgkInNiuuLgWEAIQBQ%3c%2fstring%3e%0a++%3c%21--+achievement+Master+--%3e%0a++%3cstring+name%3d%22achievement_master%22+translatable%3d%22false%22%3eCgkInNiuuLgWEAIQBg%3c%2fstring%3e%0a++%3c%21--+achievement+God+Mode+--%3e%0a++%3cstring+name%3d%22achievement_god_mode%22+translatable%3d%22false%22%3eCgkInNiuuLgWEAIQBw%3c%2fstring%3e%0a++%3c%21--+leaderboard+High+Scores+--%3e%0a++%3cstring+name%3d%22leaderboard_high_scores%22+translatable%3d%22false%22%3eCgkInNiuuLgWEAIQAA%3c%2fstring%3e%0a%3c%2fresources%3e%0a
+and.ClientId=771064835100-ojfj03e1em8d0bvqjolfcd6q8d0hlsck.apps.googleusercontent.com
+android.SetupDone=true
+and.BundleId=com.littleapex.foxyrunner

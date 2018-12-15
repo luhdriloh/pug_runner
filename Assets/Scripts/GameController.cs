@@ -10,24 +10,26 @@ public class GameController : MonoBehaviour
     public GameObject _gameoverGUI;
     public bool _gameOver = false;
 
-    public float _minMoveSpeed = 6f;
-    public float _maxMoveSpeed = 12f;
-    public float _gameMoveSpeed = 6f;
+    public float _minMoveSpeed = 6.2f;
+    public float _maxMoveSpeed = 11f;
+    public float _gameMoveSpeed = 6.2f;
     public Vector3 _gameStartPlatformPosition = new Vector3(0f, -2.5f, 0f);
    
-    public float _maxPlatformHeight = -1.5f;
+    public float _maxPlatformHeight = 30f;
     public float _minPlatformHeight = -4f;
 
     public float _minPlatformXDistance = 2f;
     public float _maxPlatformXDistance = 4.5f;
 
     public float _speedUpValue = .2f;
-    public float _speedDownValue = .2f;
+    public float _speedDownValue = 1f;
 
     public float _maxPlatformHeightDifference = 1.3f;
-    public long _points;
+    public float _points;
 
-    public int _speedUpMultiplier = 1;
+    public int _speedUpMultiplier;
+    public int _minSpeedMultiplier = 1;
+    public int _maxSpeedMultiplier = 25;
 
 
     private void Awake()
@@ -45,32 +47,34 @@ public class GameController : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    public void Score()
+    {
+        _points += _speedUpMultiplier;
+    }
+
     public void SpeedUp()
     {
-        if (_gameMoveSpeed >= _maxMoveSpeed)
+        if (_speedUpMultiplier >= _maxSpeedMultiplier)
         {
+            _points += _speedUpMultiplier;
             return;
         }
 
-        _speedUpMultiplier++;
         _gameMoveSpeed += _speedUpValue;
+        _speedUpMultiplier++;
     }
 
     public void SpeedDown()
     {
-        if (_gameMoveSpeed <= _minMoveSpeed)
+        if (_gameMoveSpeed - _speedDownValue <= _minMoveSpeed)
         {
+            _speedUpMultiplier = _minSpeedMultiplier;
             _gameMoveSpeed = _minMoveSpeed;
             return;
         }
 
         _gameMoveSpeed -= _speedDownValue;
-        _speedUpMultiplier--;
-    }
-
-    public void Score()
-    {
-        _points += _speedUpMultiplier;
+        _speedUpMultiplier -= 5;
     }
 
     public void GameOver()
@@ -80,6 +84,7 @@ public class GameController : MonoBehaviour
         PlayerSaveData._playerSaveDataInstance.UpdateHighscore(_points);
         _gameoverGUI.SetActive(true);
         GetComponentInChildren<GameMusic>().SetGameOverMusic();
+        GoogleLeaderboardsPost.PostScoreToGoogleLeaderboards((long)_points);
     }
 
     public void Restart()

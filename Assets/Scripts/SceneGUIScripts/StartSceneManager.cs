@@ -11,11 +11,14 @@ public class StartSceneManager : MonoBehaviour
     private void Start()
     {
         _startGameButton.onClick.AddListener(StartGameplayScene);
+        _leaderboardsButton.onClick.AddListener(StartLeaderboardsScene);
+        GoogleLeaderboardsPost.EnableGoogleLeaderBoards();
+        GoogleLeaderboardsPost.LogIn();
     }
 
     private void StartLeaderboardsScene()
-    { 
-    
+    {
+        GoogleLeaderboardsPost.ShowLeaderboards();
     }
 
     private void StartGameplayScene()

@@ -16,13 +16,14 @@ public class GameoverScript : MonoBehaviour
 
     public Button _startGameButton;
     public Button _leaderboardsButton;
+    public Button _rateButton;
 
     private void OnEnable()
     {
         _scoreTextToTurnOff.SetActive(false);
         _scoreMuliplierTextToTurnOff.SetActive(false);
 
-        long currentScore = GameController._gameController._points;
+        long currentScore = (long)GameController._gameController._points;
         List<long> highscores = PlayerSaveData._playerSaveDataInstance.GetHighscores();
         long highscore = highscores[highscores.Count - 1];
 
@@ -35,15 +36,22 @@ public class GameoverScript : MonoBehaviour
 
         // set up the buttons
         _startGameButton.onClick.AddListener(StartGameplayScene);
+        _leaderboardsButton.onClick.AddListener(StartLeaderboardsScene);
+        _rateButton.onClick.AddListener(RateGame);
     }
 
     private void StartLeaderboardsScene()
     {
-
+        GoogleLeaderboardsPost.ShowLeaderboards();
     }
 
     private void StartGameplayScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private void RateGame()
+    {
+        Application.OpenURL("market://details?id=com.littleapex.foxyrunner");
     }
 }

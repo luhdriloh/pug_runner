@@ -16,7 +16,7 @@ public class CoinItemScript : MonoBehaviour
     {
         if (OutOfBounds())
         {
-            _inUse = false;
+            GameController._gameController.SpeedDown();
             gameObject.SetActive(false);
         }
     }
@@ -27,7 +27,6 @@ public class CoinItemScript : MonoBehaviour
         {
             CoinParticleSpawn._coinSpawnInstance.Spawn(transform.position);
             GameController._gameController.SpeedUp();
-            _inUse = false;
             gameObject.SetActive(false);
         }
     }

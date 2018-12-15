@@ -73,7 +73,7 @@ public class PlayerSaveData : MonoBehaviour
         return _highscores._listOfHighscores;
     }
 
-    public void UpdateHighscore(long highscore)
+    public void UpdateHighscore(float highscore)
     {
         int scoreGreaterThanHowManyPreviousOnes = 0;
 
@@ -89,7 +89,7 @@ public class PlayerSaveData : MonoBehaviour
 
         if (scoreGreaterThanHowManyPreviousOnes > 0)
         {
-            _highscores._listOfHighscores.Add(highscore);
+            _highscores._listOfHighscores.Add((long)highscore);
             _highscores._listOfHighscores.Sort();
 
             _highscores._listOfHighscores = _highscores._listOfHighscores.GetRange(1, 10);

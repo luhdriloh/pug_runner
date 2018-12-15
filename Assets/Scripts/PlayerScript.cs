@@ -112,7 +112,7 @@ public class PlayerScript : MonoBehaviour
 
     private bool InView()
     {
-        return transform.position.y > -7;
+        return transform.position.y > -10;
     }
 
 

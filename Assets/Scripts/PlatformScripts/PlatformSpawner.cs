@@ -48,7 +48,9 @@ public class PlatformSpawner : MonoBehaviour
         Vector3 platformPosition = _platformsInUse[_platformsInUse.Count - 1].gameObject.transform.position;
         if (platformPosition.x <= 10)
         {
-            CreatePlatform();
+            Platform platformCreated =  CreatePlatform();
+            CreateSpeedUpCoin(platformCreated);
+            //CreatePlatformBaddies(platformCreated);
         }
     }
 
@@ -85,6 +87,7 @@ public class PlatformSpawner : MonoBehaviour
         int whichTypeOfPlatform = ReturnTypeOfPlatformToSpawn();
         Platform platform = _platformsNotInUse[whichTypeOfPlatform].Pop();
         _platformsInUse.Add(platform);
+
         platform.GetComponent<Platform>().PutPlatformIntoPlay(GameController._gameController._gameStartPlatformPosition);
     }
 
@@ -99,9 +102,9 @@ public class PlatformSpawner : MonoBehaviour
     private float ReturnXOfPlatformToSpawn(Platform previousPlatform)
     {
         float farRightSidePosition = previousPlatform.GetFarRightSide();
-        float rangeToAdd = Random.Range(GameController._gameController._minPlatformXDistance, GameController._gameController._maxPlatformXDistance);
         float platformSpeedPart = GameController._gameController._gameMoveSpeed - GameController._gameController._minMoveSpeed;
-        return (farRightSidePosition + rangeToAdd + platformSpeedPart);
+        float rangeToAdd = Random.Range(GameController._gameController._minPlatformXDistance, GameController._gameController._maxPlatformXDistance + platformSpeedPart);
+        return (farRightSidePosition + rangeToAdd);
     }
 
 
@@ -119,7 +122,7 @@ public class PlatformSpawner : MonoBehaviour
     }
 
 
-    private void CreatePlatform()
+    private Platform CreatePlatform()
     {
         int whichTypeOfPlatform = ReturnTypeOfPlatformToSpawn();
         Platform platformScript = _platformsNotInUse[whichTypeOfPlatform].Pop();
@@ -131,16 +134,20 @@ public class PlatformSpawner : MonoBehaviour
         _platformsInUse.Add(platformScript);
 
         platformScript.PutPlatformIntoPlay(newPlatformPosition);
+        return platformScript;
+    }
 
+    private void CreateSpeedUpCoin(Platform lastPlatformCreated)
+    {
+        float platformWidth = lastPlatformCreated.GetPlatformWidth();
         if (Random.value < _speedUpItemSpawnRate && _speedUpItem._inUse == false)
         {
-            float xPosOffset = Random.Range(platformWidth / -2f, platformWidth / 2f);
-            Vector3 position = newPlatformPosition + new Vector3(xPosOffset, 1f, _speedUpItem.transform.position.z);
+            float xPosOffset = Random.Range(platformWidth / -2.2f, platformWidth / 2.2f);
+            Vector3 position = lastPlatformCreated.transform.position + new Vector3(xPosOffset, 1f, _speedUpItem.transform.position.z);
 
             _speedUpItem.SetPotionOnPlatform(position);
         }
     }
-
 
     private int ReturnTypeOfPlatformToSpawn()
     {
